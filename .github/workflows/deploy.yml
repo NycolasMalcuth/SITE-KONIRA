@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ prod ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip "Flask>=2.3,<4"
+      - name: Build static site
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+
+          from app import app
+          from flask import render_template
+
+          dist = Path("dist")
+          dist.mkdir(parents=True, exist_ok=True)
+
+          with app.test_request_context("/"):
+              html = render_template("index.html")
+
+          (dist / "index.html").write_text(html, encoding="utf-8")
+          (dist / "404.html").write_text(html, encoding="utf-8")
+          (dist / "CNAME").write_text("konira.io\n", encoding="utf-8")
+
+          static_src = Path("static")
+          if static_src.exists():
+              shutil.copytree(static_src, dist / "static", dirs_exist_ok=True)
+          PY
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
