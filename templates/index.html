@@ -1,0 +1,213 @@
+{# templates/index.html - template Jinja para Flask #}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Exemplo: Site Header</title>
+
+  <!-- seus CSS existentes -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/background.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site-header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/corpo.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/corpo2.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/corpo3.css') }}">
+
+  <!-- CSS de ajuste para overlay e responsividade (evita "duas camadas") -->
+  <style>
+    :root { --site-header-height: 0px; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      position: relative;
+      background-image: url("{{ url_for('static', filename='images/background.svg') }}");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: top center;
+      background-size: min(100%, 1200px) auto;
+    }
+
+    /* overlay único (substitui background-color semi-transparente no body) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgb(8, 8, 8); /* ajuste a opacidade conforme quiser */
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50; /* acima do overlay */
+    }
+
+    main {
+      position: relative;
+      z-index: 10; /* conteúdo acima do overlay */
+      padding-top: var(--site-header-height);
+      min-height: 100vh;
+    }
+
+    .blocos-area {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+    }
+
+    .bloco {
+      margin-bottom: 2rem;
+      box-sizing: border-box;
+    }
+
+    .blocos-area img,
+    .blocos-area picture img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    @media (max-width: 700px) {
+      body { background-attachment: scroll; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header" role="banner">
+    <div class="sh-inner">
+      <div class="sh-cont sh-left">
+        <a href="/" class="logo-link">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo do site" class="site-logo">
+        </a>
+      </div>
+
+      <nav class="sh-cont sh-center" role="navigation" aria-label="Menu principal">
+        <ul class="nav">
+          <li><a href="#home" class="nav-link" data-key="home">Home</a></li>
+          <li><a href="#sobre" class="nav-link" data-key="sobre">Sobre nós</a></li>
+          <li><a href="#servicos" class="nav-link" data-key="servicos">Serviços</a></li>
+          <li><a href="#contatos" class="nav-link" data-key="contatos">Contatos</a></li>
+        </ul>
+      </nav>
+
+      <div class="sh-cont sh-right">
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="github-btn" aria-label="GitHub">
+          <img src="{{ url_for('static', filename='images/github.svg') }}" alt="GitHub" class="github-logo">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container produto-page">
+    <section class="blocos-area" aria-live="polite">
+      {# Inclusão server-side dos blocos (recomendado). Coloque os arquivos bloco_1.html ... bloco_5.html em templates/. #}
+      {% include 'bloco_1.html' %}
+      {% include 'bloco_2.html' %}
+      {% include 'bloco_3.html' %}
+      {% include 'bloco_4.html' %}
+      {% include 'bloco_5.html' %}
+      {# Se preferir carregar por JS, remova as linhas acima e deixe a section vazia; o script abaixo cuidará do carregamento. #}
+    </section>
+  </main>
+
+  <!-- Script do header (seu) -->
+  <script src="{{ url_for('static', filename='js/site-header.js') }}" defer></script>
+
+  <!-- Script opcional para carregar blocos via JS apenas se .blocos-area estiver vazia -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.querySelector('.blocos-area');
+      if (!container) return;
+
+      // se já existe conteúdo (server-side includes), não faz nada
+      if (container.children.length > 0) {
+        return;
+      }
+
+      // lista dos nomes dos blocos que o script pode carregar
+      const blocks = [
+        'bloco_1.html',
+        'bloco_2.html',
+        'bloco_3.html',
+        'bloco_4.html',
+        'bloco_5.html'
+      ];
+
+      const candidatePathsFor = (name) => [
+        `/static/partials/${name}`,
+        `/partials/${name}`,
+        `/partials/${name.replace(/\.html$/, '')}`
+      ];
+
+      async function fetchFirstAvailable(candidates) {
+        for (const url of candidates) {
+          try {
+            const resp = await fetch(url, { cache: 'no-cache' });
+            if (resp.ok) return { text: await resp.text(), url };
+          } catch (e) {
+            // tenta próximo candidato
+          }
+        }
+        return null;
+      }
+
+      async function fetchAndInsert(name, index) {
+        const candidates = candidatePathsFor(name);
+        const found = await fetchFirstAvailable(candidates);
+        if (!found) {
+          const errDiv = document.createElement('div');
+          errDiv.className = 'bloco bloco-error';
+          errDiv.textContent = `Conteúdo indisponível: ${name}`;
+          container.appendChild(errDiv);
+          console.warn('Nenhum partial encontrado para', name);
+          return;
+        }
+
+        const { text, url } = found;
+        const template = document.createElement('template');
+        template.innerHTML = text.trim();
+
+        let fragment = template.content.querySelector('.bloco-fragment')
+                    || template.content.querySelector('main')
+                    || template.content.querySelector('body')
+                    || template.content.querySelector('#content')
+                    || null;
+
+        const contentToInsert = fragment ? fragment.cloneNode(true) : template.content.cloneNode(true);
+        const wrapper = document.createElement('div');
+        wrapper.className = `bloco bloco-${index + 1}`;
+        wrapper.setAttribute('data-src', url);
+        wrapper.appendChild(contentToInsert);
+        container.appendChild(wrapper);
+
+        wrapper.querySelectorAll('img').forEach(img => {
+          img.style.maxWidth = '100%';
+          img.style.height = 'auto';
+          img.decoding = 'async';
+        });
+      }
+
+      (async function loadAllBlocks() {
+        for (let i = 0; i < blocks.length; i++) {
+          await fetchAndInsert(blocks[i], i);
+        }
+      })();
+    });
+  </script>
+
+  {# Observação:
+     - Se usar inclusão server-side, coloque os arquivos bloco_1.html ... bloco_5.html em templates/ e garanta que cada parcial seja apenas um fragmento (ex.: <div class="bloco-fragment">...</div>) sem <html>, <head> ou <body>.
+     - Se quiser carregar via JS, remova os {% include %} acima e coloque os arquivos em static/partials/ (ou exponha uma rota /partials/<nome> no Flask).
+  #}
+</body>
+</html>

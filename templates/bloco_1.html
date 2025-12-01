@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Korina — Corpo</title>
+
+  <!-- CSS adicional: apenas estilos para colocar e escalonar o SVG de background -->
+  <style>
+    /**
+     * Estilos adicionais apenas para o SVG de background.
+     * Variável --bg-scale controla a escala do background (ex.: 100% = original, 130% = 30% maior).
+     */
+
+    #corpo-site {
+      position: relative;
+      overflow: hidden; /* esconde partes do SVG que saiam do bloco */
+    }
+
+    /* Ajuste fácil da escala do SVG aqui */
+    :root {
+      --bg-scale: 200%; /* <- atual: 130% (aumentado). Troque para 120% / 150% etc. se quiser */
+    }
+
+    #corpo-site::before {
+      content: "";
+      position: absolute;
+      inset: 0; /* top:0; right:0; bottom:0; left:0; */
+      pointer-events: none;
+      z-index: 0;
+      background-image: url("{{ url_for('static', filename='images/backgroud.svg') }}");
+      background-repeat: no-repeat;
+      background-position: center center;
+      /* escala aplicada aqui */
+      background-size: var(--bg-scale) var(--bg-scale);
+      -webkit-background-size: var(--bg-scale) var(--bg-scale);
+      -moz-background-size: var(--bg-scale) var(--bg-scale);
+      -o-background-size: var(--bg-scale) var(--bg-scale);
+      /* opcional: leve redução de opacidade se quiser o fundo mais discreto
+         opacity: 0.95; */
+    }
+
+    /* Garante que o conteúdo do bloco fique acima do background */
+    .corpo-inner {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- bloco_1.html -->
+  <section id="corpo-site" class="corpo-site" aria-label="Apresentação Korina">
+    <div class="corpo-inner">
+
+      <!-- COLUNA ESQUERDA: título, descrição, ação -->
+      <div class="corpo-left">
+        <h1 class="cs-title" aria-hidden="false">
+          <span class="cs-title-line">
+            <span class="cs-slash">/</span>
+            <span class="cs-dev">Dev</span>
+          </span>
+          <span class="cs-title-line cs-secops">SecOps</span>
+        </h1>
+
+        <p class="cs-sub">
+          Korina entrega <strong class="accent">arquitetura escalável</strong>,
+          <strong class="accent">segurança ofensiva controlada</strong> e
+          <strong class="accent">otimizações de alto desempenho</strong> para empresas que precisam
+          confiar nos seus sistemas. Atuamos com <strong class="accent">.NET, Rust, Python</strong> e
+          <strong class="accent">ferramentas de segurança avançada</strong>.
+        </p>
+
+        <div class="cs-actions">
+          <button class="cs-btn" type="button" aria-label="Solicitar Proposta">
+            <img class="cs-btn-icon" src="{{ url_for('static', filename='images/corpo/icons/solicitar_proposta.svg') }}"
+              alt="" aria-hidden="true" width="20" height="20">
+            <span class="cs-btn-text">
+              <span class="cs-regular">Solicitar</span>
+              <span class="cs-bold">Proposta</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- COLUNA DIREITA: imagem alinhada ao centro do conteúdo -->
+      <div class="corpo-right" aria-hidden="true">
+        <img class="cs-image" src="{{ url_for('static', filename='images/corpo/imagens/homen_koniro.webp') }}"
+          alt="Imagem de apresentação Korina" width="650" height="490">
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+/* corpo5.css
+   Coloque em static/css/corpo5.css (link no HTML acima) */
+
+:root{
+  --title-size:64px;
+  --subtitle-size:20px;
+  --btn-text-size:32px;
+}
+
+html,body{
+  height:100%;
+  margin:0;
+  font-family:'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  background:#131313;
+  color:#ffffff;
+}
+
+.bloco5-section{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:48px 24px;
+}
+
+.bloco5-wrap{
+  width:100%;
+  max-width:1200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.content{
+  text-align:center;
+  position:relative;
+  padding:20px;
+}
+
+/* Título grande em Montserrat bold, 64px */
+.bloco5-title{
+  font-size:var(--title-size);
+  line-height:1.02;
+  font-weight:700;
+  margin:0 0 18px;
+  letter-spacing:-0.02em;
+}
+
+/* Subtítulo regular 20px */
+.bloco5-subtitle{
+  font-size:var(--subtitle-size);
+  margin:0 0 40px;
+  font-weight:400;
+  color:#b8b8b8;
+}
+
+/* Wrapper do CTA para posicionar o ponteiro */
+.cta-wrap{
+  display:inline-block;
+  position:relative;
+}
+
+/* Botão com dimensões aproximadas e gradiente */
+.cta-btn{
+  width:669px; /* solicitado ~669px */
+  height:116px; /* solicitado ~116px */
+  padding:0 36px;
+  border:0;
+  border-radius:120px; /* arredondamento 120px */
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  background:linear-gradient(90deg,#F87171 0%,#EF4444 100%);
+  box-shadow:0 10px 30px rgba(239,68,68,0.18);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+
+.cta-btn:active{ transform:translateY(2px) scale(.998); }
+.cta-btn:focus{ outline:3px solid rgba(248,113,113,0.18); outline-offset:4px; }
+
+.btn-text{ display:inline-flex; align-items:center; gap:6px; }
+
+.btn-regular{
+  font-size:var(--btn-text-size);
+  font-weight:400; /* solicitar = regular */
+  line-height:1;
+  color:#ffffff;
+}
+
+.btn-bold{
+  font-size:var(--btn-text-size);
+  font-weight:700; /* proposta = bold */
+  line-height:1;
+  color:#ffffff;
+}
+
+/* Ponteiro SVG posicionado à direita do botão, aparentando clique */
+.pointer{
+  position:absolute;
+  right:-88px; /* ajusta sobreposição: metade da largura do ponteiro */
+  top:50%;
+  transform:translateY(-50%) rotate(-12deg);
+  width:190px;
+  height:245px;
+  pointer-events:none;
+  user-select:none;
+}
+
+/* Pequenas correções para telas menores */
+@media (max-width:900px){
+  :root{ --title-size:48px; --subtitle-size:18px; --btn-text-size:28px; }
+  .cta-btn{ width:520px; height:96px; }
+  .pointer{ right:-68px; width:150px; height:195px; }
+}
+
+@media (max-width:520px){
+  :root{ --title-size:36px; --subtitle-size:16px; --btn-text-size:20px; }
+  .cta-btn{ width:320px; height:72px; border-radius:80px; }
+  .pointer{ display:none; }
+  .bloco5-title{ padding:0 8px; }
+  .bloco5-subtitle{ padding:0 12px; }
+}

@@ -1,0 +1,45 @@
+/* background único + overlay via pseudo-elemento (não "mistura" color+image) */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* imagem de fundo no body — apenas 1 definição */
+body {
+  background-image: url("../images/background.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* cuidado em mobile, abaixo removemos em small screens */
+  background-position: top center;
+  background-size: min(100%, 1200px) auto;
+  /* z-index do pseudo-elemento garante que o overlay fique entre imagem e conteúdo */
+  position: relative;
+}
+
+/* overlay sem tocar o fluxo: */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgb(14, 14, 14); /* sua "cor" sem usar background-color do body */
+  pointer-events: none; /* não interfere em cliques */
+  z-index: 0;
+}
+
+/* seu header fica acima do overlay */
+.site-header { z-index: 50; position: fixed; top:0; left:0; right:0; }
+
+/* conteudo do main deve ficar acima do overlay também */
+main { position: relative; z-index: 10; min-height: 100vh; }
+
+/* imagens dentro dos blocos — evita distorção */
+.blocos-area img,
+.blocos-area picture img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* se o background-attachment fixed causar problemas em mobile, troca por scroll */
+@media (max-width: 700px) {
+  body { background-attachment: scroll; }
+}

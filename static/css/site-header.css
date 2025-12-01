@@ -1,0 +1,365 @@
+/* ===========================================================
+   CSS MODERNO - Header com glassmorphism aprimorado (AJUSTADO)
+   =========================================================== */
+
+/* -------- Variáveis (fácil ajuste de temática) -------- */
+:root {
+    --accent: #F51919;
+    --accent-rgb: 245, 25, 25;
+    --bg: #ffffff;
+    --muted: #6B7280;
+    --text: #0b1220;
+    --text-on-dark: #ffffff;
+    --glass-alpha: 0.88;
+    --glass-alpha-scrolled: 0.56;
+    --glass-blur: 6px;
+    --glass-blur-scrolled: 12px;
+    --card-radius: 50px;
+    --nav-radius-default: 28px;
+    --nav-radius-scrolled: 50px;
+    --shadow-soft: 0 8px 28px rgba(12, 16, 32, 0.06);
+    --shadow-accent: 0 10px 30px rgba(245, 25, 25, 0.10);
+    --ease: cubic-bezier(.2, .9, .25, 1);
+    --header-bg: rgba(250, 251, 253, 0.95);
+}
+
+/* ---------- reset e base ---------- */
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial
+}
+
+:root {
+    --site-header-height: 84px
+}
+
+/* ---------- header fixo ---------- */
+.site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    padding: 16px 20px;
+    box-shadow: var(--shadow-soft);
+    border-bottom: 1px solid rgba(10, 14, 20, 0.04);
+    background: transparent;
+    /* header base transparente — conteúdo interno controla o visual */
+    transition: padding .22s var(--ease), box-shadow .22s var(--ease), background .28s var(--ease);
+}
+
+/* container interno com largura controlada */
+.sh-inner {
+    width: min(1180px, 96%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 6px;
+    /* pequeno padding para respiro */
+    border-radius: 999px;
+    /* aparência pill leve */
+    /* Estado padrão (não scrolled): fundo branco sólido */
+    background: transparent;
+    box-shadow: none;
+    transition: background .28s var(--ease), backdrop-filter .28s var(--ease), color .18s var(--ease), box-shadow .28s var(--ease), transform .18s var(--ease);
+}
+
+/* quando NÃO scrolled -> fundo branco (leitura padrão) */
+.site-header:not(.scrolled) .sh-inner {
+
+    color: var(--text);
+    backdrop-filter: none;
+}
+
+/* quando scrolled -> fundo bem transparente + blur (glass) */
+/* removemos gradação cinza: apenas branca translúcida com blur */
+.site-header.scrolled .sh-inner {
+    background: rgba(221, 117, 117, 0);
+    color: var(--text);
+    transition: background .28s var(--ease), backdrop-filter .28s var(--ease), color .18s var(--ease);
+}
+
+/* se o JS detectar que o fundo por baixo é escuro, adicionamos .dark-backdrop para garantir contraste */
+.site-header.scrolled.dark-backdrop .sh-inner {
+    background: rgba(0, 0, 0, 0.36);
+    /* escurece levemente */
+    color: var(--text-on-dark);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
+}
+
+/* ---------- Pills (cards internos) ---------- */
+/* cartão base com glass effect leve — removi gradiente cinza e deixei branco translúcido */
+.sh-cont {
+    background: #ffffff02;
+    border-radius: var(--card-radius);
+    padding: 16px 48px;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    box-shadow: 0 6px 18px rgba(12, 16, 32, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(var(--glass-blur)) saturate(115%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(115%);
+    transition: transform .22s var(--ease), background .28s var(--ease), box-shadow .28s var(--ease), backdrop-filter .28s var(--ease), padding .18s var(--ease);
+}
+
+/* ---------- sh-left (logo) — garantir espaço e alinhamento ---------- */
+.sh-left {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+ 
+    padding-right: 24px;
+    /* garante espaço mínimo para a logo sem "espremer" */
+    min-width: 140px;
+}
+
+/* logo wrapper */
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 8px;
+    /* margem interna de separação */
+}
+
+/* logo em si */
+.site-logo {
+    height: 36px;
+    display: block;
+    margin-right: 8px;
+    max-width: 220px;
+    object-fit: contain;
+}
+
+/* se a logo for muito larga em telas pequenas, limita para não quebrar layout */
+@media (max-width:860px) {
+    .sh-left {
+        min-width: 92px;
+        padding-left: 16px;
+        padding-right: 12px
+    }
+
+    .site-logo {
+        height: 32px;
+        max-width: 140px
+    }
+}
+
+/* ---------- sh-center/sh-right (mantive seu comportamento) ---------- */
+.sh-center {
+    justify-content: center;
+    padding: 16px 48px;
+    gap: 16px
+}
+
+.sh-right {
+    flex: 0 0 auto;
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.94), rgba(var(--accent-rgb), 0.88));
+    color: #fff;
+    padding: 16px 42px;
+    border-radius: 40px;
+    box-shadow: var(--shadow-accent);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform .22s var(--ease), box-shadow .28s var(--ease), background .28s var(--ease);
+}
+
+/* sh-cont quando header scrolled: mais translúcido e blur aumentado */
+.site-header.scrolled .sh-cont {
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, calc(var(--glass-alpha-scrolled) - 0.18)),
+            rgba(255, 255, 255, calc(var(--glass-alpha-scrolled) - 0.10)));
+    backdrop-filter: blur(var(--glass-blur-scrolled)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-scrolled)) saturate(120%);
+    box-shadow: 0 14px 40px rgba(8, 10, 14, 0.06);
+    transform: translateY(-3px);
+}
+
+/* sh-right mais suave quando scrolled */
+.site-header.scrolled .sh-right {
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.82), rgba(var(--accent-rgb), 0.74));
+    box-shadow: var(--shadow-accent);
+    transform: translateY(-2px);
+}
+
+/* ---------- navegação ---------- */
+.nav {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center
+}
+
+.nav-link {
+    position: relative;
+    display: inline-block;
+    padding: 12px 28px;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+    border-radius: var(--nav-radius-default);
+    cursor: pointer;
+    user-select: text;
+    transition: color .18s var(--ease), transform .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease);
+    backface-visibility: hidden;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(10, 14, 20, 0.98), rgba(10, 14, 20, 0.98));
+    z-index: -1;
+    opacity: 0;
+    transform: scaleX(.98);
+    transition: opacity .16s var(--ease), transform .16s var(--ease);
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+    color: rgb(var(--accent-rgb))
+}
+
+.nav-link:active {
+    transform: translateY(0)
+}
+
+.nav-link.active,
+.nav-link[aria-current="true"],
+.nav-link:focus {
+    color: #fff;
+    background: transparent;
+    outline: none
+}
+
+.nav-link.active::after,
+.nav-link[aria-current="true"]::after,
+.nav-link:focus::after {
+    opacity: 1;
+    transform: scaleX(1);
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(10, 14, 20, 1), rgba(15, 19, 25, 1));
+    box-shadow: 0 6px 18px rgba(6, 8, 12, 0.28);
+}
+
+/* quando scrolled, radius dos nav-links conforme solicitado */
+.site-header.scrolled .nav-link {
+    border-radius: var(--nav-radius-scrolled);
+    padding: 10px 26px;
+    color: #111827
+}
+
+.site-header.scrolled .nav-link:hover {
+    color: rgb(var(--accent-rgb))
+}
+
+.site-header.scrolled .nav-link.active,
+.site-header.scrolled .nav-link[aria-current="true"] {
+    color: #fff
+}
+
+/* seleção de texto */
+.nav-link::selection,
+.nav-link::-moz-selection {
+    background: rgba(10, 14, 20, 0.9);
+    color: #fff
+}
+
+/* GitHub btn */
+.github-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #fff;
+    transition: transform .18s var(--ease), box-shadow .22s var(--ease), opacity .2s var(--ease);
+    will-change: transform
+}
+
+.github-btn svg {
+    display: block;
+    height: 22px;
+    width: auto;
+    fill: currentColor
+}
+
+.github-logo {
+    height: 22px;
+    display: block;
+    filter: none
+}
+
+.github-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(245, 25, 25, 0.14)
+}
+
+.github-btn:active {
+    transform: translateY(0)
+}
+
+/* fallback quando backdrop-filter não suportado */
+@supports not (backdrop-filter: blur(1px)) {
+    .site-header.scrolled .sh-cont {
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(10, 14, 20, 0.04);
+    }
+}
+
+/* foco acessível */
+.nav-link:focus-visible {
+    box-shadow: 0 0 0 6px rgba(10, 14, 30, 0.06);
+    border-radius: 999px
+}
+
+/* responsividade */
+@media (max-width:860px) {
+    .sh-inner {
+        gap: 12px
+    }
+
+    .sh-cont {
+        padding: 12px 18px;
+        min-height: 44px;
+        border-radius: 28px
+    }
+
+    .sh-right {
+        padding: 8px 18px;
+        border-radius: 22px
+    }
+
+    .nav {
+        gap: 8px
+    }
+
+    .nav-link {
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 20px
+    }
+
+    .site-logo {
+        height: 32px
+    }
+}
+
+/* garantir que o main não fique coberto pelo header */
+main {
+    padding-top: var(--site-header-height, 84px)
+}
