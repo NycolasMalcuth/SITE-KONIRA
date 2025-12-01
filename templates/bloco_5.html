@@ -1,47 +1,29 @@
+<section id="bloco-5" class="bloco5-section" aria-label="Solicitar Proposta DevSecOps">
+  <div class="bloco5-wrap">
+    <div class="content">
+      <!-- TÍTULO PRINCIPAL -->
+      <h1 class="bloco5-title">
+        <span class="title-slash">/</span>Quero uma Proposta <br>DevSecOps
+      </h1>
 
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Bloco 5 — Solicitar Proposta</title>
-  <!-- Montserrat -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <!-- CSS externo (coloque corpo5.css em static/css/) -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/corpo5.css') }}">
-</head>
-<body>
-  <main>
-    <section id="bloco-5" class="bloco5-section" aria-label="Solicitar Proposta DevSecOps">
-      <div class="bloco5-wrap">
-        <div class="content">
-          <!-- TÍTULO PRINCIPAL -->
-          <h1 class="bloco5-title">/Quero uma Proposta DevSecOps</h1>
+      <!-- SUBTÍTULO -->
+      <p class="bloco5-subtitle">Plano prático com PoC, roadmap e estimativa de investimento</p>
 
-          <!-- SUBTÍTULO -->
-          <p class="bloco5-subtitle">Plano prático com PoC, roadmap e estimativa de investimento</p>
+      <!-- BOTÃO + PONTEIRO -->
+      <div class="cta-wrap">
+        <button class="cta-btn" type="button" aria-label="Solicitar Proposta">
+          <span class="btn-text">
+            <img src="{{ url_for('static', filename='images/corpo/icons/solicitar.svg') }}" alt=""
+                 aria-hidden="true" class="btn-icon">
+            <span class="btn-regular">Solicitar&nbsp;</span>
+            <span class="btn-bold">Proposta</span>
+          </span>
+        </button>
 
-          <!-- BOTÃO + PONTEIRO -->
-          <div class="cta-wrap">
-            <button class="cta-btn" type="button" aria-label="Solicitar Proposta">
-              <span class="btn-text">
-                <span class="btn-regular">Solicitar&nbsp;</span>
-                <span class="btn-bold">Proposta</span>
-              </span>
-            </button>
-
-            <!-- ponteiro localizado à direita do botão (aparenta estar clicando) -->
-            <img
-              src="{{ url_for('static', filename='images/corpo/imagens/ponteiro_mouser.svg') }}"
-              alt=""
-              aria-hidden="true"
-              class="pointer"
-              width="190"
-              height="245">
-          </div>
-        </div>
+        <!-- ponteiro localizado à direita do botão (aparenta estar clicando) -->
+        <img src="{{ url_for('static', filename='images/corpo/imagens/ponteiro_mouser.svg') }}" alt=""
+          aria-hidden="true" class="pointer" width="190" height="245">
       </div>
-    </section>
-  </main>
-</body>
-</html>
+    </div>
+  </div>
+</section>
