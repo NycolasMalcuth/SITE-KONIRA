@@ -1,0 +1,305 @@
+    :root {
+      --control-gutter: 64px;
+      --card-width: 430px;
+      --card-gap: 0px;
+      --parallax: 0.78;
+      --stage-gutter: 96px;
+      --fg: 255, 255, 255;
+      --muted-white: 255, 255, 255;
+      --accent: 245, 25, 25;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", Inter, system-ui, -apple-system, "Segoe UI", Roboto;
+    }
+
+    /* LAYOUT (mantive seu CSS - ajustes mínimos) */
+    .timeline-section {
+      padding: 0
+    }
+
+    .tl-wrap {
+      width: 100%;
+      padding: 0 20px
+    }
+
+    .tl-viewport {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      padding: 100px var(--control-gutter);
+      outline: none;
+      background: transparent;
+    }
+
+    .tl-stage {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 200px);
+      overflow: visible;
+    }
+
+    .tl-bg {
+      position: absolute;
+      left: 0;
+      margin-top: 50vh;
+      margin: 50vh 0 0 0;
+      transform: translateY(-50%) translateX(0);
+      height: 200px;
+      width: auto;
+      max-width: 1400px;
+      max-height: 320px;
+      pointer-events: none;
+      user-select: none;
+      will-change: transform;
+      z-index: 0;
+      opacity: 0.95;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.22));
+      object-fit: contain;
+    }
+
+    .tl-track {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--card-gap);
+      height: 80%;
+      z-index: 2;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .tl-track::before {
+      content: '';
+      display: block;
+      width: calc(var(--stage-gutter));
+      height: 1px
+    }
+
+    .tl-track::after {
+      content: '';
+      display: block;
+      width: 160px;
+      height: 1px
+    }
+
+    .tl-intro-item {
+      min-width: 420px;
+      padding: 10vh 0 0 0;
+      align-self: flex-start;
+      z-index: 6;
+    }
+
+    .tl-intro-small {
+      font-size: 22px;
+      color: rgba(var(--muted-white), 0.92);
+      display: block
+    }
+
+    .tl-intro-main {
+      display: flex;
+      align-items: baseline;
+      gap: 8px
+    }
+
+    .tl-slash {
+      color: rgb(var(--accent));
+      font-weight: 800;
+      font-size: 55px
+    }
+
+    .tl-intro-title {
+      margin: 0;
+      font-size: 64px;
+      font-weight: 700;
+      color: rgba(var(--fg), 1)
+    }
+
+    .tl-intro-sub {
+      margin-top: 6px;
+      font-size: 14px;
+      color: rgba(var(--fg), 0.85);
+      max-width: 420px
+    }
+
+    .tl-item {
+      min-width: var(--card-width);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 28px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      box-sizing: border-box;
+      cursor: pointer;
+      opacity: 0.86;
+      transition: transform .36s cubic-bezier(.2, .9, .25, 1), opacity .36s, box-shadow .28s;
+      backdrop-filter: blur(6px) saturate(115%);
+      text-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+      margin: 0px 50px 0px 50px;
+    }
+
+    #card-4 {
+      margin: 0px 0px 0px 300px;
+    }
+
+    .tl-item-icon {
+      width: 50px;
+      height: 50px;
+      flex: 0 0 36px;
+      object-fit: contain;
+      margin-right: 12px
+    }
+
+    .tl-item-body {
+      display: block
+    }
+
+    .tl-item-title {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(var(--fg), 1)
+    }
+
+    .tl-item-desc {
+      margin: 0;
+      font-size: 13px;
+      color: rgba(var(--fg), 0.86);
+      line-height: 1.45
+    }
+
+    .tl-item.top {
+      align-self: flex-start;
+      margin-top: -36px;
+      z-index: 5
+    }
+
+    .tl-item.bottom {
+      align-self: flex-end;
+      margin-bottom: -36px;
+      z-index: 3
+    }
+
+    .tl-item.active {
+      transform: translateY(-8px) scale(1.02);
+      opacity: 1;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      z-index: 7
+    }
+
+    .end-arrow {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(14px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .28s ease, opacity .28s ease;
+      z-index: 9999
+    }
+
+    .end-arrow.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto
+    }
+
+    @media (max-width:720px) {
+      .tl-viewport {
+        height: auto;
+        padding: 20px
+      }
+
+      .tl-stage {
+        height: auto
+      }
+
+      .tl-bg-wrap {
+        position: absolute;
+        left: 100;
+        top: 60%;
+        transform: translateY(-50%);
+        height: 200px;
+        pointer-events: none;
+        user-select: none;
+        will-change: transform;
+        z-index: 0;
+        opacity: 0.95;
+        filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.22));
+        padding: 0px 100px 0px 100px;
+      }
+
+      .tl-bg {
+        display: block;
+        height: 100%;
+        width: 10px;
+      }
+
+      .tl-bg-wrap::after {
+        content: "";
+        position: absolute;
+        left: 100%;
+        top: 0;
+        width: 40px;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .tl-track {
+        display: block;
+        gap: 12px;
+        width: 100%
+      }
+
+      .tl-track::before,
+      .tl-track::after {
+        display: none
+      }
+
+      .tl-intro-item {
+        position: static;
+        transform: none;
+        margin-bottom: 12px;
+        z-index: 3
+      }
+
+      .tl-item {
+        width: 100%;
+        min-width: unset;
+        position: static;
+        transform: none
+      }
+
+      .end-arrow {
+        display: none
+      }
+    }
+
+    .after {
+      padding: 80px 20px;
+      background: #fff;
+      color: #111;
+      min-height: 600px;
+      margin-top: 40px
+    }
+
+
+    
+/* animação de esconder/mostrar header */
+.site-header {
+  transition: transform 280ms ease, opacity 200ms ease;
+}
+
+/* classe aplicada quando o bloco-9 está visível */
+.site-header--hidden {
+  transform: translateY(-100%); /* move para cima */
+}
+
+

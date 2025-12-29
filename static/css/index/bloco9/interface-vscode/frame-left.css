@@ -1,0 +1,109 @@
+  :root { --accent: #e92929; }
+
+  /* Escopo do fragment — deve ocupar 100% do espaço do container injetado */
+  .left-root {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;               /* <-- importante: herda a altura do grid cell */
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;           /* evita que margens externas causem overflow do grid */
+  }
+
+  /* Barra lateral: ocupa toda a altura do root e permite rolagem interna se necessário */
+  .left-bar {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;               /* preenche todo o espaço vertical do container */
+    background: #252526;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.052);
+
+    /* rolagem interna quando necessário */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* comportamento visual (não usamos sticky aqui pois a altura vem do grid) */
+    position: relative;
+  }
+
+  /* itens (ícones) — fixos ao conteúdo, não esticam verticalmente */
+  .left-icon {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    color: #9aa4ad;
+    transition: background 140ms ease, color 140ms ease;
+    margin: 2px 0;
+    flex: 0 0 auto;             /* não estica nem encolhe verticalmente */
+  }
+
+  .left-icon img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    pointer-events: none;
+  }
+
+  .left-icon:hover {
+    background: rgba(255,255,255,0.02);
+    color: #cfe6ff;
+  }
+
+  .left-icon:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0);
+    border-radius: 8px;
+  }
+
+  /* estilo do ativo com barra vertical "fora" do botão */
+  .left-icon.active {
+    background: transparent;
+    color: #ffffff;
+  }
+  .left-icon.active::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -3px;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* área inferior (bottons que ficam no rodapé da barra) */
+  .left-bottom {
+    margin-top: auto;           /* empurra para o final da coluna */
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .left-bar * { box-sizing: border-box; }
+
+  /* opcional: remover margens padrão de elementos internos que o fragment possa inserir */
+  .left-bar h1, .left-bar h2, .left-bar p {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* small screens adjustments */
+  @media (max-width: 420px) {
+    .left-bar { gap: 8px; padding-top: 8px; padding-bottom: 8px; }
+    .left-icon { width: 40px; height: 40px; border-radius: 6px; }
+    .left-icon img { width: 18px; height: 18px; }
+  }

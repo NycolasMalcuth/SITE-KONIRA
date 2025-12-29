@@ -1,0 +1,136 @@
+.frame {
+  display: flex;
+  flex-direction: column;
+  height: 877px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  position: relative;
+  background-color: #0a0e1e;
+}
+
+.frame .div {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 79px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.frame .group {
+  position: relative;
+  width: 770px;
+  height: 109px;
+}
+
+.frame .div-2 {
+  display: flex;
+  flex-direction: column;
+  width: 770px;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+}
+
+.frame .agendar-diagn-stico {
+  position: relative;
+  align-self: stretch;
+  margin-top: -1.00px;
+  font-family: "Montserrat-Bold", Helvetica;
+  font-weight: 700;
+  color: transparent;
+  font-size: 48px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame .text-wrapper {
+  color: #f87171;
+}
+
+.frame .span {
+  color: #ffffff;
+}
+
+.frame .p {
+  position: relative;
+  width: 510px;
+  font-family: "Montserrat-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame .div-3 {
+  display: flex;
+  flex-direction: column;
+  height: 116px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 32px 177px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.frame .group-2 {
+  position: absolute;
+  width: 805px;
+  height: 116px;
+  top: 0;
+  left: 0;
+  border-radius: 71.5px;
+  background: linear-gradient(
+    90deg,
+    rgba(248, 113, 113, 1) 0%,
+    rgba(239, 68, 68, 1) 100%
+  );
+}
+
+.frame .div-4 {
+  display: flex;
+  width: 451px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.frame .group-3 {
+  position: relative;
+  width: 44px;
+  height: 52px;
+  background-image: url(./img/vector.svg);
+  background-size: 100% 100%;
+}
+
+.frame .solicitar-diagn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 388px;
+  height: 35px;
+  font-family: "Montserrat-Bold", Helvetica;
+  font-weight: 400;
+  color: #0a0e1e;
+  font-size: 32px;
+  letter-spacing: 0;
+  line-height: 35.4px;
+  white-space: nowrap;
+}
+
+.frame .text-wrapper-2 {
+  font-weight: 700;
+}
+
+.frame .text-wrapper-3 {
+  font-family: "Montserrat-Regular", Helvetica;
+}

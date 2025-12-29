@@ -1,0 +1,200 @@
+/* corpo3.css - estilos para o bloco Quickstart */
+
+/* Import de fonte Montserrat (SemiBold 600 e Regular 400) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+:root{
+  --accent: #F51919;
+  --accent-rgb: 245,25,25;
+
+  --text: #ffffff;
+  --muted: #6B7280;
+  --white: #ffffff;
+  --glass-alpha: 0.06;
+  --btn-border-color: rgba(255,255,255,0.98); /* borda branca conforme solicitado */
+  --btn-radius: 999px;
+  --gap: 36px;
+  --max-content-width: 1180px;
+}
+
+/* Container externo */
+.quickstart-section{
+  width: 100%;
+  display: block;
+  padding: 180px 50px 180px 50px;
+  box-sizing: border-box;
+  /* se quiser que o bloco tenha fundo transparente por padrão, deixar none; caso contrário ajuste */
+  background: transparent;
+  color: var(--text);
+  font-family: "Montserrat", Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* centro da seção com limite de largura */
+.qs-wrap{
+  width: min(var(--max-content-width), 96%);
+  margin: 0 auto;
+}
+
+/* layout principal: colunas alinhadas verticalmente ao centro */
+.qs-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+/* coluna esquerda: texto */
+.qs-left{
+  flex: 1 1 480px;
+  min-width: 260px;
+  max-width: 640px;
+}
+
+/* heading: logo ao lado esquerdo do título, ambos com 48px de altura */
+.qs-heading{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+/* logo com mesma "altura" do texto (48px) e respeitando espaçamento */
+.qs-logo{
+  height: 48px;
+  width: auto;
+  display: inline-block;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* título: Montserrat SemiBold 48px */
+.qs-title{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600; /* semi-bold */
+  font-size: 48px;
+  line-height: 1;
+  margin: 0;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+/* lead paragraph: espaçamento e contraste confortável */
+.qs-lead{
+  margin-top: 12px;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* botão transparente com borda branca e cantos arredondados */
+.qs-actions{ display:flex; align-items:center; gap:12px; }
+
+.qs-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding: 12px 18px;
+  background: transparent;
+  border: 1px solid var(--btn-border-color);
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  transition: transform .18s cubic-bezier(.2,.9,.25,1), background .18s ease, box-shadow .18s ease;
+  color: var(--white);
+  font-size: 15px;
+  line-height: 1;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ícone dentro do botão */
+.qs-btn-icon{
+  display:block;
+  height: 25px;
+  width: 25px;
+  object-fit: contain;
+  filter: none;
+}
+
+/* texto do botão: "Solicitar" regular + "Proposta" negrito */
+.qs-btn-text{ display:inline-flex; gap:8px; align-items:center; }
+.qs-regular{ font-weight:400; font-family: "Montserrat", sans-serif; }
+.qs-bold{ font-weight:700; font-family: "Montserrat", sans-serif; }
+
+/* hover/active do botão */
+.qs-btn:hover{
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.qs-btn:active{ transform: translateY(0); }
+
+/* coluna direita: ilustração */
+.qs-right{
+  flex: 0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  max-width: 700px;
+}
+
+/* ilustração SVG: dimensionamento desejado (650x490) e responsivo */
+.qs-illustration{
+  width: 650px;
+  height: 490px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Seções com fundo escuro: caso o bloco seja colocado sobre fundo escuro, adaptamos a borda do botão para branco e texto para branco */
+.quickstart-section.dark,
+.quickstart-section[data-theme="dark"]{
+  color: var(--white);
+}
+.quickstart-section.dark .qs-lead,
+.quickstart-section[data-theme="dark"] .qs-lead{
+  color: rgba(255,255,255,0.88);
+}
+.quickstart-section.dark .qs-btn,
+.quickstart-section[data-theme="dark"] .qs-btn{
+  color: var(--white);
+  border-color: rgba(255,255,255,0.98);
+}
+
+/* Caso o bloco esteja sobre fundo claro — opcional fallback: borda escura para manter visibilidade */
+.quickstart-section.light,
+.quickstart-section[data-theme="light"]{
+  --btn-border-color: rgba(11,18,32,0.08);
+  color: var(--text);
+}
+.quickstart-section.light .qs-btn{
+  color: var(--text);
+  border-color: var(--btn-border-color);
+}
+
+/* Responsividade: empilha em telas menores */
+@media (max-width: 980px){
+  .qs-inner{ gap: 20px; }
+  .qs-illustration{ width: 520px; height: auto; max-width: 48vw; }
+  .qs-title{ font-size: 40px; }
+}
+
+@media (max-width: 720px){
+  .qs-inner{
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+  }
+  .qs-left{ max-width: 640px; }
+  .qs-heading{ justify-content: center; }
+  .qs-right{ margin-bottom: 6px; }
+  .qs-title{ font-size: 36px; }
+  .qs-lead{ max-width: 100%; }
+  .qs-btn{ padding: 10px 16px; }
+  .qs-illustration{ width: 100%; max-width: 420px; height: auto; }
+}

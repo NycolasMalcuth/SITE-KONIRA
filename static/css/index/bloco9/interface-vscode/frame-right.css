@@ -1,0 +1,202 @@
+/* reset / base */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  font-family: "Fira Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* estrutura principal (flex) — atenção a min-width:0 para evitar overflow flex */
+.right-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.right-panel {
+  background: #151515; /* substituído de --right-bg */
+  color: #94a3b8;      /* substituído de --muted */
+  padding: 12px;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 12px;           /* substituído de --gap */
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+/* área do editor principal — permite encolher sem forçar overflow global */
+.code-area {
+  flex: 1 1 auto;
+  min-width: 0;
+  /* obrigatório para evitar que filhos flex causem overflow */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chrome-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.108);
+}
+
+/* scroll do editor — overflow apenas vertical, horizontal controlado por wrap */
+.code-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* evitar scroll horizontal */
+  flex: 1 1 auto;
+  padding: 6px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+.code-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.code-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+
+/* código: usar pre-wrap para quebrar linhas longas e evitar que o conteúdo alargue o container */
+pre.code {
+  font-family: inherit;
+  font-size: 6px; /* substituído de calc(var(--editor-font-size) * 1px) */
+  line-height: 1.45;
+  margin: 0;
+  color: #e6eef6;
+  white-space: pre-wrap;
+  /* permite quebra de linha automática */
+  word-break: break-word;
+  /* quebra onde necessário */
+  overflow-wrap: anywhere;
+  /* força quebra em palavras muito longas */
+  tab-size: 2;
+  box-sizing: border-box;
+  max-width: 100%;
+  /* nunca maior que o contêiner */
+}
+
+/* tokens de cor (mantidos) */
+.tok-doctype { color: #aeaeae; }
+.tok-comment { color: #e21b1b; opacity: 0.85; font-style: italic; }
+.tok-tag { color: #e21b1b; }
+.tok-punct { color: #e21b1b; }
+.tok-attr { color: #aeaeae; font-weight: 600; }
+.tok-value { color: #aeaeae; }
+.tok-string { color: #aeaeae; }
+.tok-number { color: #e21b1b; }
+.tok-keyword { color: #e21b1b; font-weight: 700; }
+.tok-fn { color: #e21b1b; }
+.tok-text { color: #dbeafe; }
+.tok-css-prop { color: #e21b1b; }
+.tok-css-val { color: #e21b1b; }
+.tok-const { color: #e21b1b; }
+.tok-builtin { color: #e21b1b; }
+
+.line-highlight {
+  display: block;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02));
+  border-left: 3px solid rgba(255, 122, 0, 0.12);
+  padding-left: 6px;
+  margin: 0 -6px;
+  box-sizing: border-box;
+}
+
+/* minimap: fixado no canto direito, mas sem forçar o layout do editor */
+.minimap-wrap {
+  flex: 0 0 56px;       /* substituído de --minimap-width */
+  width: 56px;          /* substituído de --minimap-width */
+  height: calc(100% - 24px);
+  margin-left: auto;
+  border-radius: 6px;
+  padding: 9px;         /* substituído de --minimap-padding */
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(0, 0, 0, 0.035));
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: hidden;
+  position: relative;
+}
+
+.minimap {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  pointer-events: none;
+}
+
+/* pre dentro do minimap — base pequena, será escalada */
+.minimap pre {
+  margin: 0;
+  transform-origin: top left;
+  white-space: pre-wrap;
+  /* mostrar mesmo com wrap */
+  word-break: break-word;
+  line-height: 1;
+  font-size: 8px;
+  opacity: 0.95;
+  box-sizing: content-box;
+}
+
+.minimap-viewport {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(255, 122, 0, 0.06), rgba(255, 122, 0, 0.02));
+  box-shadow: inset 0 0 0 1px rgba(255, 122, 0, 0.08);
+  pointer-events: none;
+  transition: transform 120ms linear, height 120ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .minimap-viewport { transition: none; }
+}
+
+/* ajustes para telas menores (substitui as variáveis usadas dentro do media) */
+@media (max-width:700px) {
+  .minimap-wrap {
+    flex: 0 0 44px;   /* substituído do :root responsivo */
+    width: 44px;      /* substituído do :root responsivo */
+    /* padding mantém 9px (não alterado no original) */
+  }
+
+  pre.code {
+    font-size: 12px;  /* substituído do :root responsivo (editor-font-size: 12) */
+  }
+
+  .minimap pre {
+    font-size: 7px;
+  }
+}

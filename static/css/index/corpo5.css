@@ -1,0 +1,337 @@
+/* static/css/corpo5.css — versão final com gradiente seguro + shimmer interno
+   Integrado: varredura suave da direita para a esquerda com faixa mais clara
+*/
+
+
+
+/* reset / base */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: #131313;
+    color: #fff;
+
+}
+
+/* --- layout geral --- */
+.bloco5-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px 20vh;
+    overflow: visible;
+}
+
+.bloco5-wrap {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    text-align: center;
+    position: relative;
+    padding: 20px;
+}
+
+/* título */
+.bloco5-title {
+    font-size: 64px;
+    line-height: 1.02;
+    font-weight: 700;
+    margin: 0 0 18px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+}
+
+.bloco5-title .title-slash {
+    color: #e44545;
+    text-shadow: 0 2px 6px rgba(228, 69, 69, 0.15);
+}
+
+/* subtítulo */
+.bloco5-subtitle {
+    font-size: 20px;
+    margin: 0 0 40px;
+    font-weight: 400;
+    color: #b8b8b8;
+}
+
+/* CTA wrapper */
+.cta-wrap {
+    display: inline-block;
+    position: relative;
+    overflow: visible;
+}
+
+/* ============================
+   BOTÃO - gradiente varrendo
+   =========================== */
+
+#cta-main.cta-btn {
+    --cta-base: #FE2B2B;      /* vermelho base */
+    --cta-light: #FF8A8A;     /* tonalidade mais clara que varre */
+    --cta-duration: 0.9s;     /* duração do sweep no hover */
+    --cta-ease: cubic-bezier(.2,.9,.3,1);
+    --cta-breathe-duration: 6s; /* duração do leve movimento idle */
+
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-font-smoothing: antialiased;
+
+    width: 669px;
+    height: 116px;
+    padding: 0 36px;
+    border: 0;
+    border-radius: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+    isolation: isolate;
+
+    /* fallback */
+    background-color: var(--cta-base);
+
+    /* gradiente com a faixa clara no meio — usamos grande background-size para permitir o "varrer" */
+    background-image: linear-gradient(90deg,
+        var(--cta-base) 0%,
+        var(--cta-base) 30%,
+        var(--cta-light) 50%,
+        var(--cta-base) 70%,
+        var(--cta-base) 100%);
+    background-repeat: no-repeat;
+    background-size: 300% 100%;
+    /* posição inicial: faixa clara à DIREITA */
+    background-position: 100% 50%;
+
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.18);
+    transition: transform .12s var(--cta-ease), box-shadow .12s var(--cta-ease), background-position var(--cta-duration) var(--cta-ease);
+    will-change: transform, box-shadow, background-position;
+    -webkit-tap-highlight-color: transparent;
+
+    /* leve movimento idle para dar vida (muito sutil) */
+    animation: cta-breathe var(--cta-breathe-duration) ease-in-out infinite;
+}
+
+/* quando o usuário passa o mouse / foca: varre da direita para a esquerda (faixa clara aparece aos poucos do lado direito para o esquerdo) */
+#cta-main.cta-btn:hover,
+#cta-main.cta-btn:focus-visible {
+    background-position: 0% 50%;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(239, 68, 68, 0.28);
+}
+
+/* active mantém responsividade tactile */
+#cta-main.cta-btn:active {
+    transform: translateY(2px) scale(.998);
+}
+
+/* shimmer interno (mantido e suavizado) */
+#cta-main.cta-btn::after {
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: -60%;
+    width: 40%;
+    height: 120%;
+    transform: skewX(-20deg) translateX(0);
+    background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02));
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform, opacity;
+    mix-blend-mode: screen;
+    border-radius: inherit;
+}
+
+/* animação via transform para shimmer (evita artefatos) */
+@keyframes cta-shimmer-move {
+    0% {
+        transform: skewX(-20deg) translateX(-0%);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.75;
+    }
+
+    60% {
+        transform: skewX(-20deg) translateX(400%);
+        opacity: 0.75;
+    }
+
+    100% {
+        transform: skewX(-20deg) translateX(600%);
+        opacity: 0;
+    }
+}
+
+#cta-main.cta-btn:hover::after,
+#cta-main.cta-btn:focus-visible::after {
+    animation: cta-shimmer-move 1.2s cubic-bezier(.2, .9, .3, 1) forwards;
+}
+
+/* leve respiração de fundo — movimento muito sutil (só dá um pouco de vida quando não está sendo interagido) */
+@keyframes cta-breathe {
+    0%   { background-position: 100% 50%; }
+    50%  { background-position: 92% 50%; } /* apenas um deslocamento leve para a esquerda */
+    100% { background-position: 100% 50%; }
+}
+
+/* garantir que o texto fique acima de tudo */
+.btn-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 2;
+    /* acima do ::after e ::before */
+}
+
+/* ícone/textos */
+.btn-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    pointer-events: none;
+    user-select: none;
+}
+
+.btn-regular {
+    font-size: 32px;
+    font-weight: 400;
+    color: #0A0E1E;
+    line-height: 1;
+}
+
+.btn-bold {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0A0E1E;
+    line-height: 1;
+}
+
+/* Se houver um elemento .cta-shimmer no HTML antigo, escondemos pra evitar duplicar o efeito */
+#cta-main .cta-shimmer {
+    display: none !important;
+}
+
+/* PONTEIRO (mantido) */
+.pointer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: rotate(-12deg);
+    width: 220px;
+    height: 265px;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform, opacity, top, left;
+    transform-origin: center center;
+    z-index: 4;
+}
+
+/* responsivo */
+@media (max-width:900px) {
+    .bloco5-title {
+        font-size: 48px;
+    }
+
+    #cta-main.cta-btn {
+        width: 520px;
+        height: 96px;
+        border-radius: 100px;
+    }
+
+    .pointer {
+        width: 150px;
+        height: 195px;
+    }
+
+    .btn-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+    }
+
+    .btn-regular,
+    .btn-bold {
+        font-size: 28px;
+    }
+
+    .bloco5-subtitle {
+        font-size: 18px;
+    }
+}
+
+@media (max-width:520px) {
+    .bloco5-title {
+        font-size: 36px;
+        padding: 0 8px;
+    }
+
+    .bloco5-subtitle {
+        font-size: 16px;
+        padding: 0 12px;
+    }
+
+    #cta-main.cta-btn {
+        width: 320px;
+        height: 72px;
+        border-radius: 80px;
+    }
+
+    .pointer {
+        display: none;
+    }
+
+    .btn-icon {
+        width: 28px;
+        height: 28px;
+        flex: 0 0 28px;
+    }
+
+    .btn-text {
+        gap: 8px;
+    }
+
+    .btn-regular,
+    .btn-bold {
+        font-size: 20px;
+    }
+}
+
+/* reduced motion — desliga animações e shimmer */
+@media (prefers-reduced-motion: reduce) {
+    #cta-main.cta-btn {
+        transition: none !important;
+        animation: none !important;
+        background-position: 100% 50% !important; /* mantem faixa à direita fixa */
+        background-size: cover !important;
+    }
+
+    #cta-main.cta-btn::after {
+        display: none !important;
+        animation: none !important;
+    }
+
+    .pointer {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+
+.escudo-icon {
+    width: 32px;
+}

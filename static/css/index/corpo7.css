@@ -1,0 +1,479 @@
+/* corpo7.css - versão responsiva estilo "File Explorer (Windows 11)" */
+
+/* Reset mínimo */
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visually hidden helper */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* Variáveis para facilitar ajustes */
+:root {
+  --file-icon-size-desktop: 128px;
+  --file-icon-size-medium: 80px; /* usado quando a grade tiver 3 colunas */
+  --file-icon-size-small: 84px;  /* usado em telas pequenas (grid auto-fit) */
+  --file-gap-h: 20px;
+  --file-gap-v: 12px;
+  --file-padding-x: 12px;
+  --panel-dark: linear-gradient(180deg, #150600, rgba(38, 20, 16, 0.9));
+  --panel-mid: #261d1a;
+  --panel-2: #2f2c28;
+  --muted: #cfcfcf;
+}
+
+/* App layout - centraliza a janela */
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 300px 0vw;
+  min-height: 100vh;
+}
+
+/* Janela principal: shrink-to-fit, mas nunca maior que a viewport */
+.window {
+  /* shrink-to-fit para a largura do conteúdo; compatibilidade cross-browser */
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  background: linear-gradient(180deg, rgba(30, 30, 30, 0.6), rgba(18, 18, 18, 0.75));
+  border-radius: 12px; /* substituído de --radius */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  overflow: visible; /* evita cortes indesejados ao encolher */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Titlebar */
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 0px 16px;
+  background: var(--panel-dark);
+  gap: 12px;
+}
+
+.titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-k {
+  width: 20px;
+  height: auto;
+  display: block;
+}
+
+.titlegroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel-mid);
+  padding: 6px 10px;
+  border-radius: 8px 8px 0px 0px;
+}
+
+.titlegroup img {
+  width: 14px;
+  height: auto;
+}
+
+.title-windows {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  color: #fff;
+}
+
+/* Titlebar actions */
+.titlebar-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* efeitos de hover/focus removidos conforme solicitado */
+}
+
+/* ícones */
+.icon-btn img {
+  width: 16px;
+  height: auto;
+  pointer-events: none;
+}
+
+.icon-btn-meno img {
+  width: 10px;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Toolbar (subheader) */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--panel-mid);
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.crumb-k {
+  width: 14px;
+  height: auto;
+  margin-right: 4px;
+}
+
+.crumb-link {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.crumb-sep {
+  opacity: 0.5;
+}
+
+.crumb-current {
+  opacity: 0.85;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel-2);
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  outline: none; /* foco removido conforme pedido */
+  min-width: 120px;
+}
+
+.search-input::placeholder {
+  color: #a8a8a8;
+}
+
+/* Content area */
+.content-window {
+  display: flex;
+  gap: 0;
+  padding: 18px 18px 18px 0px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), transparent);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 76px;
+  min-width: 76px;
+  padding: 12px 12px 72px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: transparent;
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.sidebar-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folder-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+.folder-item {
+  margin: 0;
+}
+
+.folder-btn {
+  width: 48px; /* substituído de --folder-button-size */
+  height: 48px; /* substituído de --folder-button-size */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  outline: none; /* foco removido */
+  /* efeitos de hover removidos */
+}
+
+.folder-btn img {
+  width: 28px; /* substituído de --folder-icon-size */
+  height: auto;
+  pointer-events: none;
+  display: block;
+}
+
+.file-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-end;
+
+}
+
+/* Grade de arquivos - layout base (desktop): máximo 4 colunas */
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(4, var(--file-icon-size-desktop));
+  gap: var(--file-gap-v) var(--file-gap-h);
+  justify-content: center;
+  align-items: start;
+  margin: 6px 10vw;
+  width: fit-content;
+  box-sizing: border-box;
+  max-width: calc(
+    (var(--file-icon-size-desktop) * 4)
+    + (var(--file-gap-h) * 3)
+    + (var(--file-padding-x) * 2)
+  );
+}
+
+/* Cada item ocupa a largura do ícone (desktop) */
+.file-item {
+  width: var(--file-icon-size-desktop);
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  box-sizing: border-box;
+}
+
+/* Ícone (desktop) */
+.file-icon {
+  width: var(--file-icon-size-desktop);
+  height: auto;
+  display: block;
+}
+
+/* Texto compacto */
+.file-label {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+.file-name-strong {
+  font-weight: 600;
+  color: #fff;
+  margin-right: 2px;
+}
+
+.file-ext {
+  color: #bfbfbf;
+}
+
+/* Statusbar / footer */
+.statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--panel-mid);
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  font-size: 13px;
+}
+
+/* Breakpoint médio: 3 colunas e reduzir itens para ~80px */
+@media (max-width: 1200px) and (min-width: 881px) {@media (max-width: 1200px) and (min-width: 881px) {
+  .file-grid {
+
+    gap: 10px 14px;
+    padding: 6px 12px;
+    max-width: calc(
+      (var(--file-icon-size-medium) * 3)
+      + (14px * 2)
+      + (var(--file-padding-x) * 2)
+    );
+  }
+
+  .file-item {
+    width: var(--file-icon-size-medium);
+  }
+
+  .file-icon {
+    width: var(--file-icon-size-medium);
+  }
+
+  .file-label {
+    font-size: 11px;
+  }
+}
+
+/* Telas pequenas: janela ocupa largura disponível; grade usa grid responsivo */
+@media (max-width: 880px) {
+  .window {
+    border-radius: 10px;
+  }
+
+  .content-window {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 10px 12px;
+  }
+
+  .folder-list {
+    flex-direction: row;
+    gap: 18px;
+    overflow: auto;
+    padding: 6px;
+  }
+
+  .folder-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .file-area {
+    padding: 8px;
+  }
+
+  /* Em telas pequenas a grade usa grid para preencher largura e ajustar colunas automaticamente */
+  .file-grid {
+    display: grid;
+    gap: 8px;
+    padding: 6px;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .file-item {
+    width: auto;
+    padding: 6px;
+  }
+
+  .file-icon {
+    width: var(--file-icon-size-small);
+  }
+
+  .file-label {
+    font-size: 11px;
+  }
+
+  .title-windows {
+    font-size: 11px;
+  }
+
+  .brand-k,
+  .crumb-k {
+    width: 12px;
+  }
+}
+}
+
+
+
+.title-stack {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    gap: 8px;
+    }
+  
+
+  .title-slash {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 800;
+    color: #c32c2c;
+    letter-spacing: -0.02em;
+    z-index: 1;
+
+  }
+
+  .title-text {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    z-index: 1;
+}
+

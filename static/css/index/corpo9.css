@@ -1,0 +1,290 @@
+/* static/css/corpo9.css
+   Versão: moldura limitada ao bloco 9 (aparece só dentro do bloco 9 e some ao sair dele).
+   Adaptado para: remover barras de scroll internas e integrar o movimento horizontal
+   com o scroll vertical (via JS translateX).
+   Cole este arquivo em static/css/corpo9.css
+*/
+
+/* Reset & base */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0f1720;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Ajuste estas variáveis conforme o tamanho real dos seus includes */
+:root {
+  --leftbar-width: 64px;
+  --rightbar-width: 220px;
+  --topbar-height: 36px;
+  --bottombar-height: 20vh;
+  --panel-gap: 12px;
+  --panel-bg: transparent;
+  --panel-radius: 8px;
+  --frame-z: 40;
+  /* z-index da moldura */
+  --track-z: 10;
+  /* z-index do track - deve ficar abaixo da moldura */
+}
+
+/* ------------------------------------------------------------------
+   Escopo: tudo abaixo afeta somente o bloco 9 (classe .bloco-9).
+   ------------------------------------------------------------------ */
+
+/* ---------- HORIZONTAL SECTION (Bloco 9) ---------- */
+.bloco-9.horizontal-demo .horizontal-section {
+  position: relative;
+  width: 100%;
+}
+
+/* sticky-viewport: fica preso na viewport enquanto o usuário "percorre" a seção.
+   Importante: overflow:hidden é necessário para a técnica sticky+translate funcionar
+   sem criar scrolls internos visíveis. */
+.bloco-9.horizontal-demo .sticky-viewport {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* --- FRAME (moldura) — overlay absoluto dentro do sticky-viewport */
+.bloco-9 .frame {
+  position: absolute;
+  inset: 0;
+  z-index: var(--frame-z);
+  pointer-events: none;
+  display: block;
+}
+
+.bloco-9 .frame.hidden {
+  display: none;
+}
+
+/* grid visual da moldura */
+.bloco-9 .frame-inner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: var(--leftbar-width) 1fr var(--rightbar-width);
+  grid-template-rows: var(--topbar-height) 1fr var(--bottombar-height);
+  gap: 0;
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+  /* overlay não deve cortar o conteúdo do track */
+  z-index: calc(var(--frame-z) + 1);
+  pointer-events: none;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* partes interativas da moldura */
+.bloco-9 .part {
+  pointer-events: auto;
+  box-sizing: border-box;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
+  justify-self: stretch;
+  display: flex;
+  flex-direction: column;
+  z-index: calc(var(--frame-z) + 2);
+}
+
+/* grid placement */
+.bloco-9 #frame-top-container {
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+}
+
+.bloco-9 #frame-left-container {
+  grid-column: 1 / 2;
+  grid-row: 2 / 4;
+}
+
+.bloco-9 #frame-right-container {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}
+
+.bloco-9 #frame-bottom-container {
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
+}
+
+/* --- TRACK e PANELS: track absoluto dentro do sticky-viewport preenchendo o "buraco" */
+.bloco-9 .track {
+  position: absolute;
+  top: var(--topbar-height);
+  left: var(--leftbar-width);
+  right: var(--rightbar-width);
+  bottom: var(--bottombar-height);
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: var(--panel-gap);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  transition: none;
+  z-index: var(--track-z);
+  pointer-events: auto;
+  overflow: visible;
+  min-height: 0;
+}
+
+/* painel ocupa 100% da altura do track (JS ajusta largura para 100vw).
+   REMOVEMOS scrolls internos: overflow managed by sticky + translate technique. */
+.bloco-9 .panel {
+    height: 100%;
+    max-width: none;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 12px;
+    font-size: 1.6rem;
+    /* overflow: hidden; */
+    min-width: 0;
+    min-height: 0;
+    background: var(--panel-bg);
+    border-radius: var(--panel-radius);
+    padding: 0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* conteúdo do painel: sem scroll interno (removido overflow:auto).
+   Atenção: conteúdo maior que a altura da viewport será recortado (clipping). */
+.bloco-9 .panel .panel-content {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: block;
+  /* permitimos fluxo normal do conteúdo */
+  overflow: hidden;
+  /* evita barras internas */
+  padding: 0;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* Segurança: força filhos a respeitarem largura do painel e quebrar textos longos */
+.bloco-9 .panel .panel-content>* {
+  box-sizing: border-box;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* Imagens / vídeos: limitados para evitar overflow horizontal/vertical */
+.bloco-9 .panel .panel-content img,
+.bloco-9 .panel .panel-content picture,
+.bloco-9 .panel .panel-content video {
+  display: block;
+
+  height: auto;
+  object-fit: contain;
+}
+
+/* Iframes: limitar largura e altura. Se precisar de iframe que role internamente,
+   precisamos reabilitar overflow:auto especificamente para o iframe container. */
+.bloco-9 .panel iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  border: 0;
+}
+
+/* variações por painel (mantive suas classes) */
+.bloco-9 .panel-1 {
+  background: transparent;
+  display: flex;
+  padding: 0;
+}
+
+.bloco-9 .panel-3 {
+  background: #0c0a0a;
+}
+
+/* status bar (se usada) */
+.bloco-9 .status-bar {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  background: rgba(0, 0, 0, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
+  color: #9aa4ad;
+  font-size: 12px;
+}
+
+/* mensagens de erro / fallback (local para bloco 9) */
+.bloco-9 .load-error {
+  padding: 8px 12px;
+  background: rgba(255, 0, 0, 0.06);
+  color: #ffb3b3;
+  border-radius: 6px;
+  font-size: 13px;
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1000;
+}
+
+.bloco-9 .load-error.visible {
+  display: block;
+}
+
+/* Estilos visuais das partes da moldura */
+.bloco-9 #frame-left-container {
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.bloco-9 #frame-bottom-container {
+  background: rgba(0, 0, 0, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+/* Responsivo: reduz larguras/alturas em telas pequenas */
+@media (max-width: 900px) {
+  :root {
+    --rightbar-width: 200px;
+    --leftbar-width: 56px;
+    --bottombar-height: 20vh;
+    --topbar-height: 56px;
+  }
+}
+
+/* Utilitário: visualizar limites durante desenvolvimento (descomente se precisar) */
+/*
+.bloco-9 .frame-inner { outline: 1px dashed rgba(255,255,255,0.03); }
+.bloco-9 .track { outline: 1px dashed rgba(0,255,0,0.04); }
+*/
+
+
+/* animação de esconder/mostrar header */
+.site-header {
+  transition: transform 280ms ease, opacity 200ms ease;
+}
+
+/* classe aplicada quando o bloco-9 está visível */
+.site-header--hidden {
+  transform: translateY(-100%); /* move para cima */
+}

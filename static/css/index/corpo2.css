@@ -1,0 +1,324 @@
+/* corpo2-updated.css — versão: padroniza todos os ícones para pasta_vermelha.svg
+   + comportamento "over" que substitui completamente o ícone normal
+   Coloque este arquivo em: static/css/corpo2.css (ou sobrescreva o atual)
+
+   Observação: no estado normal usamos apenas:
+     background-image: url("/static/images/corpo/icons/pasta_vermelha.svg");
+   e no estado "over" (hover / focus / active / .is-active) usamos apenas:
+     background-image: url("/static/images/corpo/icons/over_pasta_vermelha.svg");
+   Assim o svg padrão fica totalmente oculto quando o over está ativo.
+*/
+
+:root {
+    --container-max: 1400px;
+    --ribbon-min-width: 80px;
+    --ribbon-max-width: 760px;
+    --ribbon-height: 92px;
+    --ribbon-skew: -18deg;
+    --accent: #F51919;
+    --bg-dark-a: #252525;
+    --bg-dark-b: #141414;
+    --wrap-border-radius: 70px 0 0 70px;
+    --inner-padding-x: 24px;
+    /* AUMENTEI OS ÍCONES: ajuste se precisar maior/menor */
+    --icon-size-lg: 220px;
+    --icon-size-md: 190px;
+    --icon-size-sm: 170px;
+    --gap-x: 26px;
+    --gap-y: 28px;
+}
+
+/* Reset / base */
+
+* {
+    box-sizing: border-box;
+}
+
+/* seção */
+.oquefazemos-section {
+    position: relative;
+    padding: 0 0px 24px 58px;
+    display: flex;
+    justify-content: flex-end;
+    background: transparent;
+    overflow: visible;
+}
+
+.oquefazemos-section::before {
+    content: "";
+    position: absolute;
+    top: clamp(40px, 6.5vh, 92px);
+    right: 0;
+    width: clamp(var(--ribbon-min-width), calc(100% - var(--container-max)), var(--ribbon-max-width));
+    height: clamp(56px, 6.5vh, var(--ribbon-height));
+    transform-origin: right center;
+    transform: skewX(var(--ribbon-skew));
+    background: linear-gradient(90deg, rgba(245, 25, 25, 0.10) 0%, rgba(245, 25, 25, 0.04) 100%);
+    border-radius: 18px;
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.oquefazemos-wrap {
+    width: 100%;
+    max-width: 100%;
+    background: linear-gradient(to bottom right, #121212 0%, #080808 100%);
+    border-radius: var(--wrap-border-radius);
+    padding: 0;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    overflow: visible;
+}
+
+.oquefazemos-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--inner-padding-x) 28px var(--inner-padding-x);
+    box-sizing: border-box;
+}
+
+.oquefazemos-header {
+    margin-bottom: 20px;
+}
+
+.oquefazemos-title {
+    font-size: 28px;
+    font-weight: 700;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 58px 50px 20px 90px;
+    padding: 0;
+}
+
+.oq-slash {
+    color: #F51919;
+    font-weight: 800;
+    margin-right: 6px;
+
+}
+
+.oq-title-text {
+    color: #ffffff;
+}
+
+/* grid */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap-y) var(--gap-x);
+    align-items: start;
+    justify-items: center;
+    padding-top: 6px;
+    margin: 10px 0 40px 0;
+}
+
+.service-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* DIV com background — PADRÃO E RECOMENDADO
+   Agora: cada item usa um único background por estado:
+   - normal: pasta_vermelha.svg
+   - hover/focus/active/.is-active: over_pasta_vermelha.svg
+*/
+.service-icon.service-icon-bg {
+    width: 150px;
+    height: 150px;
+    display: block;
+    border-radius: 12px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    /* Transição para transform e box-shadow. background-image não é animável de forma crossfade
+       em todos os navegadores — se quiser crossfade suave, veja o comentário no final. */
+    transition: transform .12s ease, box-shadow .12s ease;
+    background-size: 100% 100%;
+    outline: none;
+
+    /* estado normal: somente o ícone padrão (sem camada de fallback visível) */
+    background-image: url("/static/images/corpo/bloco2/pasta_vermelha.svg");
+}
+
+/* Hover / focus (teclado) / active (mouse down) / classe .is-active (persistência via JS)
+   Substitui o background por over_pasta_vermelha.svg — assim pasta_vermelha.svg fica oculto. */
+.services-grid .service-item:hover .service-icon.service-icon-bg,
+.services-grid .service-item:focus-within .service-icon.service-icon-bg,
+.services-grid .service-item:focus-visible .service-icon.service-icon-bg,
+.services-grid .service-item:active .service-icon.service-icon-bg,
+.services-grid .service-item.is-active .service-icon.service-icon-bg {
+    background-image: url("/static/images/corpo/bloco2/over_pasta_vermelha.svg");
+    transform: translateY(-6px);
+
+}
+
+/* imagem de fallback dentro do <noscript> */
+.service-icon-img {
+    display: none;
+    /* será mostrado apenas quando CSS não estiver ativo */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+/* título do serviço */
+.service-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    max-width: 150px;
+    line-height: 1.2;
+    word-break: break-word;
+    white-space: normal;
+}
+
+/* foco acessibilidade */
+.service-item:focus-within,
+.service-item:focus {
+    outline: 3px solid rgba(245, 25, 25, 0);
+    outline-offset: 6px;
+    border-radius: 8px;
+}
+
+/* responsividade (ajustei os tamanhos maiores) */
+@media (max-width: 1400px) {
+    .oquefazemos-inner {
+        padding: 0 20px 28px 20px;
+    }
+
+    .services-grid {
+        gap: 22px 20px;
+    }
+
+    .service-title {
+        max-width: 180px;
+    }
+
+    .oquefazemos-section::before {
+        top: 48px;
+        height: 80px;
+        width: clamp(var(--ribbon-min-width), calc(100% - 1000px), var(--ribbon-max-width));
+    }
+}
+
+@media (max-width: 1100px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px 20px;
+    }
+
+    .service-icon.service-icon-bg {
+        width: var(--icon-size-md);
+        height: var(--icon-size-md);
+        background-size: 60% 60%;
+    }
+
+    .service-title {
+        font-size: 18px;
+        max-width: 220px;
+    }
+
+    .oquefazemos-section::before {
+        right: 0;
+        width: clamp(var(--ribbon-min-width), calc(100% - 1000px), 420px);
+        height: 72px;
+    }
+}
+
+@media (max-width: 700px) {
+    .oquefazemos-inner {
+        padding: 0 16px 28px 16px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 18px 0;
+    }
+
+    .service-icon.service-icon-bg {
+        width: var(--icon-size-sm);
+        height: var(--icon-size-sm);
+        background-size: 60% 60%;
+    }
+
+    .service-title {
+        font-size: 18px;
+        max-width: 280px;
+    }
+
+    .oquefazemos-section::before {
+        display: none;
+    }
+}
+
+@media (min-width: 2000px) {
+    .oquefazemos-section::before {
+        width: 900px;
+        height: clamp(72px, 6.5vh, 160px);
+    }
+
+    .oquefazemos-title {
+        margin-left: clamp(48px, 4vw, 120px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .service-item,
+    .service-icon.service-icon-bg {
+        transition: none;
+        transform: none;
+    }
+}
+
+/* ---------------------------
+   Se quiser CROSSFADE SUAVE (opcional)
+   ---------------------------
+   Trocar background-image não anima suavemente na maioria dos navegadores.
+   Se preferir um fade entre os dois SVGs, substitua a regra acima pelo snippet abaixo
+   e remova/ignore as regras background-image anteriores.
+
+   ATENÇÃO: abaixo usa um ::after para posicionar o over acima do padrão e animar sua opacidade.
+   Certifique-se que os caminhos estão corretos e com suporte a SVGs (CORS se for domínio diferente).
+
+   Exemplo (opcional):
+*/
+
+/*
+.service-icon.service-icon-bg {
+    position: relative;
+    background-image: url("/static/images/corpo/icons/pasta_vermelha.svg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.service-icon.service-icon-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background-image: url("/static/images/corpo/icons/over_pasta_vermelha.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    opacity: 0;
+    transition: opacity .18s ease;
+    pointer-events: none;
+}
+
+.services-grid .service-item:hover .service-icon.service-icon-bg::after,
+.services-grid .service-item:focus-within .service-icon.service-icon-bg::after,
+.services-grid .service-item.is-active .service-icon.service-icon-bg::after {
+    opacity: 1;
+}
+*/
+
